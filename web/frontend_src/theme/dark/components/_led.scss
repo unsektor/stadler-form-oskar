@@ -1,0 +1,29 @@
+$disabled-led-background-color: #888;
+
+@keyframes led-blink--dim-1--theme_dark {
+  0%, 50% {
+    background-color: $disabled-led-background-color;
+  }
+  50.1%, 100% {
+    background-color: #4F6AF5;
+  }
+}
+
+@keyframes led-blink--dim-2--theme_dark {
+  0%, 50% {
+    background-color: $disabled-led-background-color;
+    box-shadow: //inset 0 0 5px rgba(0, 0, 0, 0.2),
+            0 0 15px transparent;
+  }
+  50.1%, 100% {
+    background-color: #4F6AF5;
+    box-shadow: //inset 0 0 5px rgba(0, 0, 0, 0.2),
+            0 0 15px #4F6AF5
+  }
+}
+
+.body_dark {
+  .led {
+    background-color: $disabled-led-background-color;
+  }
+}

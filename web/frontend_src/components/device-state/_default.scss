@@ -1,0 +1,40 @@
+.device-state {
+  table {
+    margin: 0 auto;
+  }
+
+  table td {
+    vertical-align: middle;
+  }
+
+  table tr td:first-child {
+    text-align: right;
+  }
+
+  table tr td:last-child {
+    text-align: left;
+  }
+
+  &__field {
+    margin: 0 auto;
+    font-family: Monospaced, monospace;
+
+    font-size: 16px;
+    padding: 6px 4px;
+
+    border: 1px solid #c0c0c0;
+    color: #000;
+  }
+
+  &__specification {
+    font-size: 14px;
+    color: #666;
+    margin: 1.5em 0;
+    display: block;
+  }
+
+  &__checkbox, &__label-text {
+    line-height: 17px;
+    vertical-align: middle;
+  }
+}

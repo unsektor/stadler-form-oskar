@@ -1,0 +1,18 @@
+.body_dark {
+  & {
+    background-color: #121212;
+    color: #bbb;
+  }
+
+  .container {
+    background-color: #1b1b1b;
+  }
+
+  .h1, .h2 {
+    color: #fff;
+  }
+
+  .section {
+    border-bottom: 1px solid #333;
+  }
+}

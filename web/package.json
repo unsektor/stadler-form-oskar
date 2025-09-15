@@ -1,0 +1,25 @@
+{
+  "name": "stadler-form-oskar-simulator",
+  "version": "1.0.0",
+  "license": "MIT",
+  "dependencies": {
+    "@types/node": "^24.3.0",
+    "gulp": "^5.0.1",
+    "gulp-clean": "^0.4.0",
+    "gulp-sass": "^6.0.1",
+    "gulp-sourcemaps": "^3.0.0",
+    "sass": "^1.90.0",
+    "ts-loader": "^9.5.4",
+    "typescript": "^5.9.2",
+    "webpack": "^5.102.0",
+    "webpack-stream": "^7.0.0"
+  },
+  "scripts": {
+    "build": "yarn gulp build",
+    "dev": "yarn gulp watch",
+    "type-check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "webpack-cli": "^6.0.1"
+  }
+}

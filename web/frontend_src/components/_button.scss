@@ -1,0 +1,45 @@
+.button {
+  display: inline-block;
+  max-width: 80px;
+  min-width: 80px;
+  border: none;
+  border-radius: 5px;
+  margin: 5px;
+
+  padding: 10px 6px;
+  font-size: .9rem !important;
+  background-color: #4F6AF5;
+  color: white;
+  text-align: center;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+
+  &:hover {
+    background-color: #4F6AF5;
+  }
+
+  &:active {
+    background-color: #2E4EAA; /* #2E7D32 */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    // todo disable for not disabled buttons
+  }
+
+  &_power {
+    display: block;
+    margin: 5px auto;
+    background-color: #F44336 !important;
+  }
+}
+
+.button-container {
+  font-size: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

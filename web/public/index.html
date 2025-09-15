@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" type="text/css" href="./assets/default.css">
+    <script src="./assets/default.js"></script>
+    <title>Stadler Form Oskar simulator</title>
+</head>
+<body class="body">
+
+<div class="device container">
+    <h1 class="h1">Stadler Form Oskar</h1>
+
+    <div class="section">
+        <table class="table table_led">
+            <tr>
+                <td></td>
+                <td></td>
+                <td><span class="group-label">Filter</span></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <div class="led led_hygro_5"></div>
+                </td>
+                <td>
+                    <div class="led led_filter"></div>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <div class="led led_hygro_4"></div>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <div class="led led_hygro_3"></div>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><span class="group-label">No water</span></td>
+                <td>
+                    <div class="led led_hygro_2"></div>
+                </td>
+                <td>
+                    <div class="led led_speed_2"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="led led_no-water"></div>
+                </td>
+                <td>
+                    <div class="led led_hygro_1"></div>
+                </td>
+                <td>
+                    <div class="led led_speed_1"></div>
+                </td>
+            </tr>
+        </table>
+
+        <div class="button-container">
+            <div class="button button_dimmer">Dimmer</div>
+            <div class="button button_hygro">Hygrostat</div>
+            <div class="button button_speed">Speed</div>
+            <div class="button button_power">Power</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="h2">Emit event</h2>
+        <div class="button-container">
+            <div class="button button_event_water">Water</div>
+            <div class="button button_event_pause">Pause</div>
+            <div class="button button_event_filter">Filter</div>
+        </div>
+    </div>
+
+    <div class="section device-state">
+        <h2 class="h2">State</h2>
+        <label for="count-from-lead">
+            <input class="device-state__checkbox" id="count-from-lead" type="checkbox">
+            <span class="device-state__label-text">Count by led</span>
+        </label>
+
+        <span class="device-state__specification">
+            hygrostat(3), speed(1), filter(1), dimmer(1), fan(1), water(1), power(1)
+        </span>
+
+        <table>
+            <tr>
+                <td>bin</td>
+                <td><label><input class="device-state__field" type="text" name="bin" maxlength="9"></label></td>
+            </tr>
+            <tr>
+                <td>hex</td>
+                <td><label><input class="device-state__field" type="text" name="hex" maxlength="5"></label></td>
+            </tr>
+        </table>
+    </div>
+
+    <a href="javascript://" class="anchor-switch-theme">Switch theme to dark</a>
+</div>
+
+</body>
+</html>

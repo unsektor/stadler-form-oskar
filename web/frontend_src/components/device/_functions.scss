@@ -1,0 +1,25 @@
+@function build-led-selector-by-dimmer-and-device-state($dimmer-level, $type, $device-state) {
+  // Determine leds count by type
+  $max-level: 0;
+  @if ($type == 'speed') {
+    $max-level: 2;
+  }
+
+  @if ($type == 'hygro') {
+    $max-level: 5;
+  }
+
+  // Build selector
+  $result: '';
+  @for $current-led-state from 1 through $max-level {
+    @for $device-led from 1 through $current-led-state {
+      $new-selector: (
+        ".device_power_#{$device-state}.device_dimmer_#{$dimmer-level}.device_#{$type}_#{$current-led-state} " +
+        ".led.led_#{$type}_#{$device-led}"
+      );
+      $result: if($result == '', $new-selector, $result + ', ' + $new-selector);
+    }
+  }
+
+  @return $result;
+}

@@ -1,0 +1,21 @@
+@use '../_led';
+@use '../_button';
+@use '../../../../components/device/variables';
+
+.body_dark {
+  & #{variables.$hygro-selector-dim-1-on-pause} {
+    animation: led-blink--dim-1--theme_dark 1s steps(1) infinite;
+  }
+
+  & #{variables.$hygro-selector-dim-2-on-pause} {
+    animation: led-blink--dim-2--theme_dark 1s steps(1) infinite;
+  }
+
+  & .device_filter-warning.device_dimmer_1 .led_filter {
+    animation: led-blink--dim-1--theme_dark 1s steps(1) infinite;
+  }
+
+  & .device_filter-warning.device_dimmer_2 .led_filter {
+    animation: led-blink--dim-2--theme_dark 1s steps(1) infinite;
+  }
+}

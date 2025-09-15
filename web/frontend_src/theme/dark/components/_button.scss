@@ -1,0 +1,11 @@
+// todo extract selector to variable
+// disable buttons in special cases
+
+@use '../../../components/device/variables';
+
+#{variables.$disabled-buttons-selector} {
+  .body_dark & {
+    background: #666;
+    cursor: not-allowed;
+  }
+}

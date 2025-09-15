@@ -1,0 +1,26 @@
+services:
+  build_frontend:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      target: application-dev
+    volumes:
+      - .:/usr/src/app
+    environment:
+      - NODE_ENV=development
+    # healthcheck:
+    #   interval: 30s
+    #   timeout: 4s
+    #   start_period: 5s
+    #   retries: 3
+    #   test: ["CMD", "test", "-f", "/usr/src/app/public/assets/default.js"]
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "${HTTP_PORT:-80}:80"
+    volumes:
+      - ./public:/usr/share/nginx/html
+    # depends_on:
+    #   build_frontend:
+    #     condition: service_healthy

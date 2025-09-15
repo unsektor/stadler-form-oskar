@@ -1,0 +1,20 @@
+@use './functions';
+
+$disabled-buttons-selector: (
+  ".device_power_off .button:not(.button_power), " +
+  ".device_no-water .button_event_filter, " +
+  ".device_no-water .button_dimmer, " +
+  ".device_no-water .button_speed, " +
+  ".device_no-water .button_hygro, " +
+  ".device_no-water .button_event_pause, " +
+  ".device_power_on.device_hygro_5 .button_event_pause"
+);
+
+$speed-selector-dim-1: functions.build-led-selector-by-dimmer-and-device-state(1, 'speed', 'on');
+$speed-selector-dim-2: functions.build-led-selector-by-dimmer-and-device-state(2, 'speed', 'on');
+
+$hygro-selector-dim-1: functions.build-led-selector-by-dimmer-and-device-state(1, 'hygro', 'on');
+$hygro-selector-dim-2: functions.build-led-selector-by-dimmer-and-device-state(2, 'hygro', 'on');
+
+$hygro-selector-dim-1-on-pause: functions.build-led-selector-by-dimmer-and-device-state(1, 'hygro', 'pause');
+$hygro-selector-dim-2-on-pause: functions.build-led-selector-by-dimmer-and-device-state(2, 'hygro', 'pause');

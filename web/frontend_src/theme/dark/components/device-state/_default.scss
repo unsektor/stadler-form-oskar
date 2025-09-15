@@ -1,0 +1,11 @@
+.body_dark {
+  .device-state {
+    &__field {
+      background: #202020;
+      border: 1px solid #303030;
+      font-size: 16px;
+      padding: 6px 4px;
+      color: #fff;
+    }
+  }
+}

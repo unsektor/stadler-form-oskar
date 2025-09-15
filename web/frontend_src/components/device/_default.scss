@@ -1,0 +1,80 @@
+@use '../button';
+@use '../led';
+@use './variables';
+
+.table_led {
+  border-collapse: collapse;
+  //font-size: 0;
+  margin: 5px auto;
+  font-size: 14px;
+  //margin-top: 5px;
+  color: #666;
+}
+
+.table_led td {
+  text-align: center;
+  max-width: 100px; // todo fix
+}
+
+.table_led .led {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#{variables.$disabled-buttons-selector} {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+// Device state specific cases elements styles:
+
+//.device_power_on.device_hygro_5 label[name='emulate'],
+//.device_power_off label[name='emulate'],
+//.device_no-water label[name='emulate'] {
+//  text-decoration: line-through;
+//  color: #999;
+//}
+
+.device_power_on.device_no-water .led_no-water {
+  background-color: #F44336;
+  box-shadow: 0 0 15px #F44336;
+}
+
+.device_power_on.device_dimmer_1 .led_filter,
+#{variables.$speed-selector-dim-1},
+#{variables.$hygro-selector-dim-1} {
+  & {
+    background-color: #4F6AF5;
+    opacity: 0.8;
+  }
+}
+
+.device_power_on.device_dimmer_2 .led_filter,
+#{variables.$speed-selector-dim-2},
+#{variables.$hygro-selector-dim-2} {
+  & {
+    background-color: #4F6AF5;
+    box-shadow: 0 0 15px #4F6AF5;
+  }
+}
+
+#{variables.$hygro-selector-dim-1-on-pause} {
+  animation: led-blink--dim-1 1s steps(1) infinite;
+}
+
+#{variables.$hygro-selector-dim-2-on-pause} {
+  animation: led-blink--dim-2 1s steps(1) infinite;
+}
+
+.device_filter-warning.device_dimmer_1 .led_filter {
+  animation: led-blink--dim-1 1s steps(1) infinite;
+}
+
+.device_filter-warning.device_dimmer_2 .led_filter {
+  animation: led-blink--dim-2 1s steps(1) infinite;
+}
+
+.device_no-water .led_filter {
+  background-color: #{led.$disabled-led-background-color} !important;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2) !important;
+}
