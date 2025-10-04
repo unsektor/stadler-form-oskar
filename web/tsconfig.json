@@ -6,7 +6,7 @@
     "allowJs": true,
     "outDir": "./public/assets",
     "rootDir": "./frontend_src",
-    "strict": false,
+    "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,

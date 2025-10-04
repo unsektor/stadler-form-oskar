@@ -1,185 +1,211 @@
-import { DeviceState } from "../device-state/default";
-import { DeviceStateFormatInterface } from "../device-state/serialization";
+import {DeviceState} from "../device-state/default";
+import {DeviceStateFormatInterface} from "../device-state/serialization";
 
-export const DeviceUI = function (applicationElement: HTMLElement, deviceState: DeviceState) {
-    let self = this;
+export class DeviceUI {
+    private hygrostatButtonElement: HTMLElement;
+    private powerButtonElement: HTMLElement;
+    private dimmerButtonElement: HTMLElement;
+    private speedButtonElement: HTMLElement;
 
-    this.applicationElement = applicationElement;
+    constructor(
+        public readonly applicationElement: HTMLElement,
+        private deviceState: DeviceState
+    ) {
+        this.hygrostatButtonElement = applicationElement.querySelector('.button.button_hygro') as HTMLInputElement;
+        this.powerButtonElement = applicationElement.querySelector('.button.button_power') as HTMLInputElement;
+        this.dimmerButtonElement = applicationElement.querySelector('.button.button_dimmer') as HTMLInputElement;
+        this.speedButtonElement = applicationElement.querySelector('.button.button_speed') as HTMLInputElement;
 
-    const hygrostatButtonElement: HTMLElement = applicationElement.querySelector('.button.button_hygro') as HTMLInputElement;
-    const powerButtonElement: HTMLElement = applicationElement.querySelector('.button.button_power') as HTMLInputElement;
-    const dimmerButtonElement: HTMLElement = applicationElement.querySelector('.button.button_dimmer') as HTMLInputElement;
-    const speedButtonElement: HTMLElement = applicationElement.querySelector('.button.button_speed') as HTMLInputElement;
+        this.powerButtonElement.addEventListener('click', (e: Event): void => {
+            deviceState.power = !deviceState.power;
+            this.render();
+        });
 
-    function updatePowerDisplay(): void {
-        let powerClass = deviceState.power ? 'device_power_on' : 'device_power_off';
+        this.dimmerButtonElement.addEventListener('click', (e: Event): void => {
+            // order: bright, dim, disabled
+            deviceState.dimmer = (deviceState.dimmer + 2) % 3;
+            this.updateDimmerDisplay();
+        });
 
-        applicationElement.classList.remove('device_power_on', 'device_power_off');
-        applicationElement.classList.add(powerClass);
+        this.hygrostatButtonElement.addEventListener('click', (e: Event): void => {
+            deviceState.hygrostat = Math.max(1, (deviceState.hygrostat + 1) % 6);
+            this.updateHygrostatDisplay();
+        });
 
-        applicationElement.classList.remove('device_no-water');
-        if (!deviceState.water) {
-            applicationElement.classList.add('device_no-water');
+        this.speedButtonElement.addEventListener('click', (e: Event): void => {
+            deviceState.speed = Math.max(1, (deviceState.speed + 1) % 3);
+            this.updateSpeedDisplay();
+        });
+    }
+
+    private updatePowerDisplay(): void {
+        let powerClass = this.deviceState.power ? 'device_power_on' : 'device_power_off';
+
+        this.applicationElement.classList.remove('device_power_on', 'device_power_off');
+        this.applicationElement.classList.add(powerClass);
+
+        this.applicationElement.classList.remove('device_no-water');
+        if (!this.deviceState.water) {
+            this.applicationElement.classList.add('device_no-water');
         }
     }
 
-    function updateDimmerDisplay(): void {
-        applicationElement.classList.remove('device_dimmer_1', 'device_dimmer_2');
+    private updateDimmerDisplay(): void {
+        this.applicationElement.classList.remove('device_dimmer_1', 'device_dimmer_2');
 
-        if (deviceState.power && deviceState.dimmer > 0) {
-            applicationElement.classList.add(`device_dimmer_${deviceState.dimmer}`);
+        if (this.deviceState.power && this.deviceState.dimmer > 0) {
+            this.applicationElement.classList.add(`device_dimmer_${this.deviceState.dimmer}`);
         }
     }
 
-    function updateHygrostatDisplay(): void {
+    private updateHygrostatDisplay(): void {
         for (let i = 0; i <= 5; ++i) {
-            applicationElement.classList.remove(`device_hygro_${i}`)
+            this.applicationElement.classList.remove(`device_hygro_${i}`)
         }
 
-        if (!deviceState.power || !deviceState.water) {
+        if (!this.deviceState.power || !this.deviceState.water) {
             return;
         }
 
-        if (deviceState.hygrostat === 5) {
-            deviceState.fan = true;
-            self.updateFanDisplay();
+        if (this.deviceState.hygrostat === 5) {
+            this.deviceState.fan = true;
+            this.updateFanDisplay();
         }
 
-        applicationElement.classList.add(`device_hygro_${deviceState.hygrostat}`);
-        self.updateBlinkAnimation();
+        this.applicationElement.classList.add(`device_hygro_${this.deviceState.hygrostat}`);
+        this.updateBlinkAnimation();
     }
 
-    function updateSpeedDisplay(): void {
-        applicationElement.classList.remove('device_speed_1', 'device_speed_2')
+    private updateSpeedDisplay(): void {
+        this.applicationElement.classList.remove('device_speed_1', 'device_speed_2')
 
-        if (!deviceState.power || !deviceState.water) {
+        if (!this.deviceState.power || !this.deviceState.water) {
             return;
         }
 
-        applicationElement.classList.add(`device_speed_${deviceState.speed}`)
+        this.applicationElement.classList.add(`device_speed_${this.deviceState.speed}`)
     }
 
-    this.updateResetFilterDisplay = function(): void {
-        applicationElement.classList.remove('device_filter-warning');
+    public updateResetFilterDisplay(): void {
+        this.applicationElement.classList.remove('device_filter-warning');
 
-        if (!deviceState.power || !deviceState.water) {
+        if (!this.deviceState.power || !this.deviceState.water) {
             return;
         }
 
-        if (!deviceState.filter) {
-            applicationElement.classList.add('device_filter-warning');
-            self.updateBlinkAnimation();
+        if (!this.deviceState.filter) {
+            this.applicationElement.classList.add('device_filter-warning');
+            this.updateBlinkAnimation();
         }
     }
 
-    this.updateFanDisplay = function (): void {
-        applicationElement.classList.remove('device_power_pause');
+    public updateFanDisplay(): void {
+        this.applicationElement.classList.remove('device_power_pause');
 
-        if (!deviceState.power || !deviceState.water) {
+        if (!this.deviceState.power || !this.deviceState.water) {
             return;
         }
 
-        if (!deviceState.fan) {
-            applicationElement.classList.add('device_power_pause');
+        if (!this.deviceState.fan) {
+            this.applicationElement.classList.add('device_power_pause');
         }
     }
 
-    this.updateBlinkAnimation = function(): void {
+    public updateBlinkAnimation(): void {
         // ad-hoc to sync animation of leads
-        if (deviceState.fan) {
+        if (this.deviceState.fan) {
             return;
         }
 
-        applicationElement.classList.remove('device_power_pause', 'device_filter-warning')
-        setTimeout(function () {
-            if (!deviceState.filter) {
-                applicationElement.classList.add('device_power_pause')
-                applicationElement.classList.add('device_filter-warning')
+        this.applicationElement.classList.remove('device_power_pause', 'device_filter-warning')
+
+        setTimeout((): void => {
+            if (!this.deviceState.filter) {
+                this.applicationElement.classList.add('device_power_pause')
+                this.applicationElement.classList.add('device_filter-warning')
             } else {
-                applicationElement.classList.add('device_power_pause')
+                this.applicationElement.classList.add('device_power_pause')
             }
         }, 50)
     }
 
-    this.render = function (): void {
-        updatePowerDisplay();
-        updateDimmerDisplay();
-        updateHygrostatDisplay();
-        updateSpeedDisplay();
-        self.updateResetFilterDisplay();
-        self.updateFanDisplay();
+    public render(): void {
+        this.updatePowerDisplay();
+        this.updateDimmerDisplay();
+        this.updateHygrostatDisplay();
+        this.updateSpeedDisplay();
+        this.updateResetFilterDisplay();
+        this.updateFanDisplay();
     }
-
-    powerButtonElement.addEventListener('click', (e: Event): void => {
-        deviceState.power = !deviceState.power;
-        self.render();
-    });
-
-    dimmerButtonElement.addEventListener('click', (e: Event): void => {
-        // order: bright, dim, disabled
-        deviceState.dimmer = (deviceState.dimmer + 2) % 3;
-        updateDimmerDisplay();
-    });
-
-    hygrostatButtonElement.addEventListener('click', (e: Event): void => {
-        deviceState.hygrostat = Math.max(1, (deviceState.hygrostat + 1) % 6);
-        updateHygrostatDisplay();
-    });
-
-    speedButtonElement.addEventListener('click', (e: Event): void => {
-        deviceState.speed = Math.max(1, (deviceState.speed + 1) % 3);
-        updateSpeedDisplay();
-    });
-};
-
-export const DeviceEventUI = function (deviceState: DeviceState, deviceUI) {
-    const pauseEventButtonElement = deviceUI.applicationElement.querySelector('.button.button_event_pause');
-    const filterEventButtonElement = deviceUI.applicationElement.querySelector('.button.button_event_filter');
-    const waterEventElementButton = deviceUI.applicationElement.querySelector('.button.button_event_water');
-
-    filterEventButtonElement.addEventListener('click', (e: Event): void => {
-        // ... actually, requires 5 seconds push
-        deviceState.filter = !deviceState.filter;
-        deviceUI.updateResetFilterDisplay();
-    });
-
-    pauseEventButtonElement.addEventListener('click', (e: Event): void => {
-        if (deviceState.hygrostat === 5) {
-            return;
-        }
-        deviceState.fan = !deviceState.fan;
-        deviceUI.updateFanDisplay();
-        setTimeout(deviceUI.updateBlinkAnimation, 0);
-    });
-
-    waterEventElementButton.addEventListener('click', (e: Event): void => {
-        if (!deviceState.power) {
-            return;
-        }
-        deviceState.water = !deviceState.water;
-        deviceState.fan = deviceState.water;
-        deviceUI.render();
-    });
 }
 
-export const DeviceStateUI = function (deviceState: DeviceState, deviceStateFormat: DeviceStateFormatInterface) {
-    const self = this;
-    const binInputElement: HTMLInputElement = document.querySelector('input[name=bin]') as HTMLInputElement;
-    const htmlInputElement: HTMLInputElement = document.querySelector('input[name=hex]') as HTMLInputElement;
-    const countFromLedsOptionInputElement: HTMLInputElement = document.querySelector('input[id=count-from-lead]') as HTMLInputElement;
+export class DeviceEventUI {
+    private pauseEventButtonElement: HTMLElement;
+    private filterEventButtonElement: HTMLElement;
+    private waterEventElementButton: HTMLElement;
 
-    this.render = function (): void {
-        let state = deviceStateFormat.toNumber(deviceState);
+    constructor(deviceState: DeviceState, deviceUI: DeviceUI) {
+        this.pauseEventButtonElement = deviceUI.applicationElement.querySelector('.button.button_event_pause') as HTMLElement;
+        this.filterEventButtonElement = deviceUI.applicationElement.querySelector('.button.button_event_filter') as HTMLElement;
+        this.waterEventElementButton = deviceUI.applicationElement.querySelector('.button.button_event_water') as HTMLElement;
 
-        if (deviceState.dimmer === 0 && countFromLedsOptionInputElement.checked) {
+        this.filterEventButtonElement.addEventListener('click', (e: Event): void => {
+            // ... actually, requires 5 seconds push
+            deviceState.filter = !deviceState.filter;
+            deviceUI.updateResetFilterDisplay();
+        });
+
+        this.pauseEventButtonElement.addEventListener('click', (e: Event): void => {
+            if (deviceState.hygrostat === 5) {
+                return;
+            }
+            deviceState.fan = !deviceState.fan;
+            deviceUI.updateFanDisplay();
+            setTimeout((): void => deviceUI.updateBlinkAnimation(), 0);
+        });
+
+        this.waterEventElementButton.addEventListener('click', (e: Event): void => {
+            if (!deviceState.power) {
+                return;
+            }
+            deviceState.water = !deviceState.water;
+            deviceState.fan = deviceState.water;
+            deviceUI.render();
+        });
+    }
+}
+
+export class DeviceStateUI {
+    private binInputElement: HTMLInputElement;
+    private htmlInputElement: HTMLInputElement;
+    private countFromLedsOptionInputElement: HTMLInputElement;
+    private deviceState: DeviceState;
+    private deviceStateFormat: DeviceStateFormatInterface;
+
+    constructor(
+        deviceState: DeviceState,
+        deviceStateFormat: DeviceStateFormatInterface
+    ) {
+        this.deviceState = deviceState;
+        this.deviceStateFormat = deviceStateFormat;
+        const self = this;
+        this.binInputElement = document.querySelector('input[name=bin]') as HTMLInputElement;
+        this.htmlInputElement = document.querySelector('input[name=hex]') as HTMLInputElement;
+        this.countFromLedsOptionInputElement = document.querySelector('input[id=count-from-lead]') as HTMLInputElement;
+
+        document.addEventListener('click', (e: Event): void => {
+            setTimeout(() => self.render(), 50);
+        })
+    }
+
+    render(): void {
+        let state = this.deviceStateFormat.toNumber(this.deviceState);
+
+        if (this.deviceState.dimmer === 0 && this.countFromLedsOptionInputElement.checked) {
             state &= 0b111;
         }
 
-        binInputElement.value = '0b' + state.toString(2).padStart(9, '0');
-        htmlInputElement.value = '0x' + state.toString(16);
+        this.binInputElement.value = '0b' + state.toString(2).padStart(9, '0');
+        this.htmlInputElement.value = '0x' + state.toString(16);
     }
-
-    document.addEventListener('click', (e: Event): void => {
-        setTimeout(self.render, 50);
-    })
 }
