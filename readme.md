@@ -1,6 +1,10 @@
 # Stadler form Oskar
 
-![Stadler form Oskar device photo](web/docs/_static/stadler-form-oskar-white.png)
+<p align="center">
+
+<img src="web/docs/_static/stadler-form-oskar-white.png" alt="Stadler form Oskar device photo">
+
+</p>
 
 Research & development project that provides 
 [Stadler form Oskar](https://www.stadlerform.com/en/humidifier/oskar-white-o-020) humidifier device simulator.
@@ -17,8 +21,12 @@ into the smart home systems.
 
 Live demo: <https://development.md.land/web-application/stadler-form-oskar-simulator/>
 
-![web ui light theme screenshot](web/docs/_static/web-ui.light-theme.screenshot.png)
-![web ui dark theme screenshot](web/docs/_static/web-ui.dark-theme.screenshot.png)
+<p align="center">
+
+<img src="web/docs/_static/web-ui.light-theme.screenshot.png" width="400" alt="web ui light theme screenshot">
+<img src="web/docs/_static/web-ui.dark-theme.screenshot.png" width="400" alt="web ui dark theme screenshot">
+
+</p>
 
 ### Run
 
