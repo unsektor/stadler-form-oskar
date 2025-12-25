@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+## Added
+
+- [x] feature: add CI/CD github workflow configuration to build static site
+
 ## Changed
 
 - [x] documentation: change align of images to center. fix ui screenshot images width to fit to row
