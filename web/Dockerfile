@@ -1,4 +1,4 @@
-FROM node:22-alpine as application
+FROM node:22-alpine AS application
 
 WORKDIR /usr/src/app
 
@@ -18,7 +18,7 @@ COPY . .
 
 RUN yarn run build
 
-FROM nginx:alpine as nginx-prod
+FROM nginx:alpine AS nginx-prod
 
 RUN find /usr/share/nginx/html -delete
 

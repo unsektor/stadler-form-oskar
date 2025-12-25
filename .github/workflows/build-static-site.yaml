@@ -1,0 +1,54 @@
+name: Build and Deploy Static Site
+
+on:
+  push:
+    tags:
+      - '*.*.*'
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Build Docker image and run container
+      run: |
+        cd web
+        docker build --target application-prod -t static-site-builder .
+        docker run --name site-builder --entrypoint /bin/true static-site-builder 
+        docker cp site-builder:/usr/src/app/public ../public-build
+        docker rm site-builder
+
+    - name: Create ZIP archive
+      run: |
+        cd public-build
+        zip -r ../website.zip .
+
+    - name: Setup GitHub Pages
+      uses: actions/configure-pages@v4
+
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: public-build
+
+    # Also available at https://development.md.land/web-application/stadler-form-oskar-simulator/
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: website.zip
+        generate_release_notes: true
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
