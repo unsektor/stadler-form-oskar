@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - [x] documentation: change align of images to center. fix ui screenshot images width to fit to row
 
+## Fixed
+
+- [x] fix: change `as` keyword in `Dockerfile` to avoid warning message
+
 ## [0.1.0] — 2025-10-04
 
 - Initial release
